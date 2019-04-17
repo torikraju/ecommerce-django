@@ -18,6 +18,7 @@ urlpatterns = [
     path('user/', include(('app_dir.user.urls', 'user'), namespace='user')),
     path('api/user/', include(('app_dir.user.api.urls', 'user_api'), namespace='user_api')),
     path('api/module/', include(('app_dir.module.api.urls', 'module_api'), namespace='module_api')),
+    path('product/', include(('app_dir.products.urls', 'product'), namespace='product')),
 ]
 
 if settings.DEBUG:
