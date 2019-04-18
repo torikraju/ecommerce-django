@@ -2,6 +2,7 @@ import os
 import random
 
 from django.db import models
+from django.db.models import Q
 from django.db.models.signals import pre_save
 from django.urls import reverse
 
@@ -29,6 +30,12 @@ class ProductQuerySet(models.query.QuerySet):
     def featured(self):
         return self.filter(featured=True)
 
+    def search(self, query):
+        lookups = (Q(title__icontains=query) |
+                   Q(description__icontains=query) |
+                   Q(price__icontains=query))
+        return self.filter(lookups).distinct()
+
 
 class ProductManager(models.Manager):
 
@@ -40,6 +47,9 @@ class ProductManager(models.Manager):
 
     def featured(self):  # Product.objects.featured()
         return self.get_queryset().featured()
+
+    def search(self, query):
+        return self.get_queryset().active().search(query)
 
     def get_by_id(self, _id):
         qs = self.get_queryset().filter(id=_id)
