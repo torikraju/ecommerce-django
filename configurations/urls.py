@@ -7,11 +7,11 @@ from rest_framework_jwt.views import obtain_jwt_token
 from .views import home_page, about, contact, login_page, register_page
 
 urlpatterns = [
-    path('', home_page),
+    path('', home_page, name='home'),
     path('about', about),
-    path('contact', contact),
-    path('login/', login_page),
-    path('register/', register_page),
+    path('contact', contact, name='contact'),
+    path('login/', login_page, name='login'),
+    path('register/', register_page, name='register'),
     path('admin/', admin.site.urls),
     path('api-auth/', include('rest_framework.urls', namespace='rest')),
     path('api-token-auth', obtain_jwt_token),
