@@ -49,7 +49,8 @@ LOCAL_APPS = (
     'app_dir.user',
     'app_dir.module',
     'app_dir.products',
-    'app_dir.search'
+    'app_dir.search',
+    'app_dir.tag'
 )
 
 INSTALLED_APPS = DEFAULT_APPS + EXTERNAL_APPS + LOCAL_APPS
