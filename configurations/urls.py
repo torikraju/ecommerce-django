@@ -1,10 +1,12 @@
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
+from django.contrib.auth.views import LogoutView
 from django.urls import path, include
 from rest_framework_jwt.views import obtain_jwt_token
 
-from .views import home_page, about, contact, login_page, register_page
+from app_dir.account.views import login_page, register_page
+from .views import home_page, about, contact
 
 urlpatterns = [
     path('', home_page, name='home'),
@@ -12,6 +14,7 @@ urlpatterns = [
     path('contact', contact, name='contact'),
     path('login/', login_page, name='login'),
     path('register/', register_page, name='register'),
+    path('logout/', LogoutView.as_view(), {'next_page': '/'}, name='logout'),
     path('admin/', admin.site.urls),
     path('api-auth/', include('rest_framework.urls', namespace='rest')),
     path('api-token-auth', obtain_jwt_token),

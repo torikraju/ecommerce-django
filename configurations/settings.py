@@ -52,7 +52,8 @@ LOCAL_APPS = (
     'app_dir.search',
     'app_dir.tag',
     'app_dir.cart',
-    'app_dir.order'
+    'app_dir.order',
+    'app_dir.account'
 )
 
 INSTALLED_APPS = DEFAULT_APPS + EXTERNAL_APPS + LOCAL_APPS
@@ -66,7 +67,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
-
+LOGOUT_REDIRECT_URL = '/login/'
 ROOT_URLCONF = 'configurations.urls'
 
 TEMPLATES = [
