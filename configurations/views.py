@@ -1,8 +1,6 @@
-from django.contrib.auth import authenticate, login
-from django.contrib.auth.models import User
-from django.shortcuts import render, redirect
+from django.shortcuts import render
 
-from .forms import ContactForm, LoginForm, RegistrationForm
+from .forms import ContactForm
 
 
 def home_page(request):
@@ -19,4 +17,3 @@ def contact(request):
 
 def about(request):
     return render(request, 'home_page.html', {})
-

@@ -1,6 +1,7 @@
 import math
 from django.db import models
 from django.db.models.signals import pre_save, post_save
+from django.dispatch import receiver
 
 from app_dir.cart.models import Cart
 from configurations.utils import unique_order_id_generator
@@ -58,11 +59,9 @@ def post_save_cart_total(sender, instance, created, *args, **kwargs):
 post_save.connect(post_save_cart_total, sender=Cart)
 
 
+@receiver(post_save, sender=Order)
 def post_save_order(sender, instance, created, *args, **kwargs):
     print("running")
     if created:
         print("Updating... first")
         instance.update_total()
-
-
-post_save.connect(post_save_order, sender=Order)

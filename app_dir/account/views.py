@@ -37,12 +37,12 @@ def register_page(request):
     form = RegistrationForm(request.POST or None)
     context = {'form': form}
     if form.is_valid():
-        username = form.cleaned_data.get('username')
-        password = form.cleaned_data.get('password')
-        email = form.cleaned_data.get('email')
+        username = request.POST['username']
+        password = request.POST['password']
+        email = request.POST['email']
         user = User.objects.create_user(username, email, password)
-        user.first_name = form.cleaned_data.get('first_name')
-        user.last_name = form.cleaned_data.get('last_name')
+        user.first_name = request.POST['first_name']
+        user.last_name = request.POST['last_name']
         user.save()
         print(form.cleaned_data)
     return render(request, 'auth/registration.html', context)
