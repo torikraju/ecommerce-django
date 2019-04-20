@@ -1,12 +1,19 @@
 from django.http import Http404
 from django.views.generic import DetailView, ListView
 
+from app_dir.cart.models import Cart
 from app_dir.products.models import Product
 
 
 class ProductDetailSlugView(DetailView):
     queryset = Product.objects.all()
     template_name = "products/detail.html"
+
+    def get_context_data(self, *args, **kwargs):
+        context = super(ProductDetailSlugView, self).get_context_data(**kwargs)
+        cart_obj, new_obj = Cart.objects.new_or_get(self.request)
+        context['cart'] = cart_obj
+        return context
 
     def get_object(self, *args, **kwargs):
         slug = self.kwargs.get('slug')

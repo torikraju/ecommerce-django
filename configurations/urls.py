@@ -20,6 +20,7 @@ urlpatterns = [
     path('api/module/', include(('app_dir.module.api.urls', 'module_api'), namespace='module_api')),
     path('product/', include(('app_dir.products.urls', 'product'), namespace='product')),
     path('search/', include(('app_dir.search.urls', 'search'), namespace='search')),
+    path('cart/', include(('app_dir.cart.urls', 'cart'), namespace='cart')),
 ]
 
 if settings.DEBUG:
