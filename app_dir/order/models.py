@@ -3,6 +3,7 @@ from django.db import models
 from django.db.models.signals import pre_save, post_save
 from django.dispatch import receiver
 
+from app_dir.billing.models import BillingProfile
 from app_dir.cart.models import Cart
 from configurations.utils import unique_order_id_generator
 
@@ -16,13 +17,14 @@ ORDER_STATUS_CHOICES = (
 
 class Order(models.Model):
     order_id = models.CharField(max_length=120, blank=True)  # AB31DE3
-    # billing_profile = ?
+    billing_profile = models.ForeignKey(BillingProfile, null=True, blank=True, on_delete=models.CASCADE)
     # shipping_address
     # billing_address
     cart = models.ForeignKey(Cart, on_delete=models.CASCADE)
     status = models.CharField(max_length=120, default='created', choices=ORDER_STATUS_CHOICES)
     shipping_total = models.DecimalField(default=5.99, max_digits=20, decimal_places=2)
     total = models.DecimalField(default=0.00, max_digits=20, decimal_places=2)
+    active = models.BooleanField(default=True)
 
     def __str__(self):
         return self.order_id
