@@ -1,3 +1,5 @@
 from django.contrib import admin
 
-# Register your models here.
+from app_dir.account.models import GuestEmail
+
+admin.site.register(GuestEmail)

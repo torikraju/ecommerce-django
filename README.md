@@ -8,14 +8,11 @@ Simple boilerplate for django & django rest framework
 After doing this, confirm that you have installed virtualenv globally as well. If not, run this:
 
     $ pip install virtualenv
-Then, Git clone this repo to your PC
 
-    $ git clone https://github.com/p8ul/django-rest-framework-boilerplate
-    $ cd django-rest-framework-boilerplate
 Create a virtual environment
 
     $ virtualenv .venv && source .venv/bin/activate
-Install dependancies
+Install dependencies
 
     $ pip install -r requirements.txt
 Make migrations & migrate

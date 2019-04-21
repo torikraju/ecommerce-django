@@ -5,7 +5,7 @@ from django.contrib.auth.views import LogoutView
 from django.urls import path, include
 from rest_framework_jwt.views import obtain_jwt_token
 
-from app_dir.account.views import login_page, register_page
+from app_dir.account.views import login_page, register_page, guest_register_view
 from .views import home_page, about, contact
 
 urlpatterns = [
@@ -14,6 +14,7 @@ urlpatterns = [
     path('contact', contact, name='contact'),
     path('login/', login_page, name='login'),
     path('register/', register_page, name='register'),
+    path('^register/guest/', guest_register_view, name='guest_register'),
     path('logout/', LogoutView.as_view(), {'next_page': '/'}, name='logout'),
     path('admin/', admin.site.urls),
     path('api-auth/', include('rest_framework.urls', namespace='rest')),
