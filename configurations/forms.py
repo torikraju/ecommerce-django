@@ -1,5 +1,5 @@
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout, Submit, Row, Column, Reset
+from crispy_forms.layout import Layout, Row, Column
 from django import forms
 
 
@@ -21,6 +21,15 @@ class ContactForm(forms.Form):
                 css_class='form-row'
             ),
             'message',
-            Submit('submit', 'Save'),
-            Reset('reset', 'Reset', css_class='btn-danger')
+            # Submit('submit', 'Save'),
+            # Reset('reset', 'Reset', css_class='btn-danger')
         )
+
+    def clean_email(self):
+        email = self.cleaned_data.get("email")
+        if not "gmail.com" in email:
+            raise forms.ValidationError("Email has to be gmail.com")
+        return email
+
+    # def clean_message(self):
+    #     raise forms.ValidationError("Message is wrong.")
