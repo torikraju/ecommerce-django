@@ -1,10 +1,12 @@
 from decimal import Decimal
 
-from django.contrib.auth.models import User
+from django.conf import settings
 from django.db import models
 from django.db.models.signals import m2m_changed, pre_save
 
 from app_dir.products.models import Product
+
+User = settings.AUTH_USER_MODEL
 
 
 class CartManager(models.Manager):

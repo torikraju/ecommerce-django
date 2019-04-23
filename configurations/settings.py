@@ -60,6 +60,8 @@ LOCAL_APPS = (
 
 INSTALLED_APPS = DEFAULT_APPS + EXTERNAL_APPS + LOCAL_APPS
 
+AUTH_USER_MODEL = 'account.User'  # changes the built-in user model to ours
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',

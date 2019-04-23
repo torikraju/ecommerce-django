@@ -1,6 +1,5 @@
 from django.db import models
 
-# Create your models here.
 from app_dir.billing.models import BillingProfile
 
 ADDRESS_TYPES = (
