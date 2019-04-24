@@ -4,9 +4,10 @@ from django.views.generic import DetailView, ListView
 from app_dir.analytics.signals import object_viewed_signal
 from app_dir.cart.models import Cart
 from app_dir.products.models import Product
+from app_dir.analytics.mixins import ObjectViewedMixin
 
 
-class ProductDetailSlugView(DetailView):
+class ProductDetailSlugView(ObjectViewedMixin,DetailView):
     queryset = Product.objects.all()
     template_name = "products/detail.html"
 
