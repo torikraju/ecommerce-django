@@ -1,11 +1,13 @@
+import stripe
 from django.conf import settings
 from django.db import models
-from django.db.models.signals import post_save
+from django.db.models.signals import post_save, pre_save
 from django.dispatch import receiver
 
 from app_dir.account.models import GuestEmail
 
 User = settings.AUTH_USER_MODEL
+stripe.api_key = "sk_test_M2Ho1BLmn1QtcT0AusMvGoN800yHLCmZ7O"
 
 
 class BillingProfileManager(models.Manager):
@@ -32,6 +34,7 @@ class BillingProfile(models.Model):
     user = models.OneToOneField(User, null=True, blank=True, on_delete=models.CASCADE)
     email = models.EmailField()
     active = models.BooleanField(default=True)
+    customer_id = models.CharField(max_length=120, null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -43,11 +46,14 @@ class BillingProfile(models.Model):
     objects = BillingProfileManager()
 
 
-# def billing_profile_created_receiver(sender, instance, created, *args, **kwargs):
-#     if created:
-#         print("ACTUAL API REQUEST Send to stripe/braintree")
-#         instance.customer_id = newID
-#         instance.save()
+@receiver(pre_save, sender=BillingProfile)
+def billing_profile_created_receiver(sender, instance, *args, **kwargs):
+    if not instance.customer_id and instance.email:
+        print("ACTUAL API REQUEST Send to stripe/braintree")
+        customer = stripe.Customer.create(email=instance.email)
+        print(customer)
+        instance.customer_id = customer.id
+
 
 @receiver(post_save, sender=User)
 def user_created_receiver(sender, instance, created, *args, **kwargs):

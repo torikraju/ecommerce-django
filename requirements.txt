@@ -27,3 +27,4 @@ django-rest-swagger
 django-admin-list-filter-dropdown
 django-crispy-forms
 pygments
+stripe==2.26.0
