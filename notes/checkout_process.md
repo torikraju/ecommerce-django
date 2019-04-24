@@ -15,7 +15,7 @@
 
 
 3. Orders / Invoices Component
-    - Connecting the Billing Profile
+    - Connectin g the Billing Profile
     - Shipping / Billing Address
     - Cart
     - Status -- Shipped? Cancelled?
