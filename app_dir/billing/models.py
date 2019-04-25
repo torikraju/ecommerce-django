@@ -46,6 +46,21 @@ class BillingProfile(models.Model):
     def charge(self, order_obj, card=None):
         return Charge.objects.do(self, order_obj, card)
 
+    def get_cards(self):
+        return self.card_set.all()
+
+    @property
+    def has_card(self):  # instance.has_card
+        card_qs = self.get_cards()
+        return card_qs.exists()  # True or False
+
+    @property
+    def default_card(self):
+        default_cards = self.get_cards().filter(default=True)
+        if default_cards.exists():
+            return default_cards.first()
+        return None
+
     objects = BillingProfileManager()
 
 
@@ -68,15 +83,15 @@ class CardManager(models.Manager):
     def add_new(self, billing_profile, token):
         if token:
             customer = stripe.Customer.retrieve(billing_profile.customer_id)
-            card_response = customer.sources.create(source=token)
+            stripe_card_response = customer.sources.create(source=token)
             new_card = self.model(
                 billing_profile=billing_profile,
-                # stripe_id=stripe_card_response.id,
-                # brand=stripe_card_response.brand,
-                # country=stripe_card_response.country,
-                # exp_month=stripe_card_response.exp_month,
-                # exp_year=stripe_card_response.exp_year,
-                # last4=stripe_card_response.last4
+                stripe_id=stripe_card_response.id,
+                brand=stripe_card_response.brand,
+                country=stripe_card_response.country,
+                exp_month=stripe_card_response.exp_month,
+                exp_year=stripe_card_response.exp_year,
+                last4=stripe_card_response.last4
             )
             new_card.save()
             return new_card
