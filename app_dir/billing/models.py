@@ -3,6 +3,7 @@ from django.conf import settings
 from django.db import models
 from django.db.models.signals import post_save, pre_save
 from django.dispatch import receiver
+from django.urls import reverse
 
 from app_dir.account.models import GuestEmail
 
@@ -49,6 +50,9 @@ class BillingProfile(models.Model):
     def get_cards(self):
         return self.card_set.all()
 
+    def get_payment_method_url(self):
+        return reverse('billing-payment-method')
+
     def set_cards_inactive(self):
         cards_qs = self.get_cards()
         cards_qs.update(active=False)
@@ -61,7 +65,7 @@ class BillingProfile(models.Model):
 
     @property
     def default_card(self):
-        default_cards = self.get_cards().filter(default=True)
+        default_cards = self.get_cards().filter(active=True, default=True)
         if default_cards.exists():
             return default_cards.first()
         return None
@@ -165,3 +169,11 @@ class Charge(models.Model):
     risk_level = models.CharField(max_length=120, null=True, blank=True)
 
     objects = ChargeManager()
+
+
+@receiver(post_save, sender=Card)
+def new_card_post_save_receiver(sender, instance, created, *args, **kwargs):
+    if instance.default:
+        billing_profile = instance.billing_profile
+        qs = Card.objects.filter(billing_profile=billing_profile).exclude(pk=instance.pk)
+        qs.update(default=False)
