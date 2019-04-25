@@ -7,7 +7,7 @@ from rest_framework_jwt.views import obtain_jwt_token
 
 from app_dir.account.views import guest_register_view, RegisterView, LoginView
 from app_dir.address.views import checkout_address_create_view, checkout_address_reuse_view
-from app_dir.billing.views import payment_method_view
+from app_dir.billing.views import payment_method_view, payment_method_createview
 from app_dir.cart.views import cart_detail_api_view
 from .views import home_page, about, contact
 
@@ -23,6 +23,7 @@ urlpatterns = [
     path('logout/', LogoutView.as_view(), name='logout'),
     path('api/cart/', cart_detail_api_view, name='api-cart'),
     path('billing/payment-method/', payment_method_view, name='billing-payment-method'),
+    path('billing/payment-method/create/', payment_method_createview, name='billing-payment-method-endpoint'),
     path('admin/', admin.site.urls),
     path('api-auth/', include('rest_framework.urls', namespace='rest')),
     path('api-token-auth', obtain_jwt_token),
