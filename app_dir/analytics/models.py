@@ -35,7 +35,7 @@ class ObjectViewed(models.Model):
 def object_viewed_receiver(sender, instance, request, *args, **kwargs):
     c_type = ContentType.objects.get_for_model(sender)  # instance.__class__
     ObjectViewed.objects.create(
-        user=request.user,
+        user=request.user if request.user.is_authenticated else None,
         content_type=c_type,
         object_id=instance.id,
         ip_address=get_client_ip(request)

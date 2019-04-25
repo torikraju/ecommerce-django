@@ -59,3 +59,7 @@ def billing_profile_created_receiver(sender, instance, *args, **kwargs):
 def user_created_receiver(sender, instance, created, *args, **kwargs):
     if created:
         BillingProfile.objects.get_or_create(user=instance, email=instance.email)
+
+
+# class Card(models.Model):
+#     pass
