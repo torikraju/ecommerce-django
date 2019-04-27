@@ -9,6 +9,7 @@ from app_dir.account.views import guest_register_view, RegisterView, LoginView
 from app_dir.address.views import checkout_address_create_view, checkout_address_reuse_view
 from app_dir.billing.views import payment_method_view, payment_method_createview
 from app_dir.cart.views import cart_detail_api_view
+from app_dir.marketing.views import MarketingPreferenceUpdateView
 from .views import home_page, about, contact
 
 urlpatterns = [
@@ -32,6 +33,7 @@ urlpatterns = [
     path('api/module/', include(('app_dir.module.api.urls', 'module_api'), namespace='module_api')),
     path('product/', include(('app_dir.products.urls', 'product'), namespace='product')),
     path('search/', include(('app_dir.search.urls', 'search'), namespace='search')),
+    path('settings/email/', MarketingPreferenceUpdateView.as_view(), name='marketing-pref'),
     path('cart/', include(('app_dir.cart.urls', 'cart'), namespace='cart')),
 ]
 
