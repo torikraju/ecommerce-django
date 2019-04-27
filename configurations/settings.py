@@ -66,6 +66,11 @@ AUTH_USER_MODEL = 'account.User'  # changes the built-in user model to ours
 FORCE_SESSION_TO_ONE = False
 FORCE_INACTIVE_USER_ENDSESSION = False
 
+
+MAILCHIMP_API_KEY = "0f522fc596d6b10c0fed7d32a7a13de0-us20"
+MAILCHIMP_DATA_CENTER = "us20"
+MAILCHIMP_EMAIL_LIST_ID = "c2a20c8f41"
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
