@@ -56,7 +56,8 @@ LOCAL_APPS = (
     'app_dir.account',
     'app_dir.billing',
     'app_dir.address',
-    'app_dir.analytics'
+    'app_dir.analytics',
+    'app_dir.marketing'
 )
 
 INSTALLED_APPS = DEFAULT_APPS + EXTERNAL_APPS + LOCAL_APPS
