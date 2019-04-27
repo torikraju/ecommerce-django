@@ -14,7 +14,7 @@ https://docs.djangoproject.com/en/2.1/ref/settings/
 import datetime
 import os
 
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.1/howto/deployment/checklist/
@@ -66,7 +66,6 @@ AUTH_USER_MODEL = 'account.User'  # changes the built-in user model to ours
 
 FORCE_SESSION_TO_ONE = False
 FORCE_INACTIVE_USER_ENDSESSION = False
-
 
 MAILCHIMP_API_KEY = "0f522fc596d6b10c0fed7d32a7a13de0-us20"
 MAILCHIMP_DATA_CENTER = "us20"
