@@ -61,14 +61,14 @@ update-env.py
 .vscode
 .history
 
-/app_dir/*/migrations/*
+#/app_dir/*/migrations/*
 !/app_dir/*/migrations/__init__.py
 
 !.gitignore
 !.travis.yml
 
-*/migrations/*
-!*/migrations/__init__.py
+#*/migrations/*
+#!*/migrations/__init__.py
 
 static_cdn/media_root/*
 
