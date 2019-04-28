@@ -21,10 +21,13 @@ six==1.10.0
 text-unidecode==1.2
 urllib3==1.23
 Pillow
-mysqlclient
 django-extra-fields
 django-rest-swagger
 django-admin-list-filter-dropdown
 django-crispy-forms
 pygments
 stripe==2.26.0
+dj-database-url
+gunicorn
+psycopg2
+
