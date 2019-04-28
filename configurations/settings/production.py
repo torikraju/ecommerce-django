@@ -14,6 +14,8 @@ https://docs.djangoproject.com/en/2.1/ref/settings/
 import datetime
 import os
 
+import dj_database_url
+
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 # Quick-start development settings - unsuitable for production
@@ -111,6 +113,9 @@ DATABASES = {
     }
 }
 
+db_from_env = dj_database_url.config()  # postgreSQL Database in heroku
+DATABASES['default'].update(db_from_env)
+DATABASES['default']['CONN_MAX_AGE'] = 500
 
 # Password validation
 # https://docs.djangoproject.com/en/2.1/ref/settings/#auth-password-validators
