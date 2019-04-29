@@ -37,6 +37,7 @@ urlpatterns = [
     path('settings/email/', MarketingPreferenceUpdateView.as_view(), name='marketing-pref'),
     path('cart/', include(('app_dir.cart.urls', 'cart'), namespace='cart')),
     path('accounts/', RedirectView.as_view(url='/account')),
+    path('accounts/', include("app_dir.account.passwords.urls")),
     path('account/', include(('app_dir.account.urls', 'account'), namespace='account')),
     path('webhooks/mailchimp/', MailchimpWebhookView.as_view(), name='webhooks-mailchimp'),
     path('settings/', RedirectView.as_view(url='/account')),

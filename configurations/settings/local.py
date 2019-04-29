@@ -71,6 +71,14 @@ MAILCHIMP_API_KEY = "0f522fc596d6b10c0fed7d32a7a13de0-us20"
 MAILCHIMP_DATA_CENTER = "us20"
 MAILCHIMP_EMAIL_LIST_ID = "c2a20c8f41"
 
+
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'crazewolfbd@gmail.com'
+EMAIL_HOST_PASSWORD = 'iamt0rik'
+EMAIL_USE_TLS = True
+DEFAULT_FROM_EMAIL = 'ecommerce@example.com'
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
