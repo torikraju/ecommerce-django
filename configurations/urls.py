@@ -35,6 +35,7 @@ urlpatterns = [
     path('search/', include(('app_dir.search.urls', 'search'), namespace='search')),
     path('settings/email/', MarketingPreferenceUpdateView.as_view(), name='marketing-pref'),
     path('cart/', include(('app_dir.cart.urls', 'cart'), namespace='cart')),
+    path('account/', include(('app_dir.account.urls', 'account'), namespace='account')),
     path('webhooks/mailchimp/', MailchimpWebhookView.as_view(), name='webhooks-mailchimp'),
 ]
 

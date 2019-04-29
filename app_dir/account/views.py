@@ -1,7 +1,8 @@
 from django.contrib.auth import authenticate, login
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render, redirect
 from django.utils.http import is_safe_url
-from django.views.generic import CreateView, FormView
+from django.views.generic import CreateView, FormView, DetailView
 
 from app_dir.account.forms import LoginForm, RegistrationForm, GuestForm
 from app_dir.account.models import GuestEmail
@@ -95,3 +96,14 @@ class LoginView(FormView):
             else:
                 return redirect("/")
         return super(LoginView, self).form_invalid(form)
+
+
+# @login_required  # /accounts/login/?next=/some/path/
+# def account_home_view(request):
+#     return render(request, "accounts/home.html", {})
+
+class AccountHomeView(LoginRequiredMixin, DetailView):
+    template_name = 'account/home.html'
+
+    def get_object(self):
+        return self.request.user
