@@ -3,6 +3,7 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.contrib.auth.views import LogoutView
 from django.urls import path, include
+from django.views.generic import RedirectView
 from rest_framework_jwt.views import obtain_jwt_token
 
 from app_dir.account.views import guest_register_view, RegisterView, LoginView
@@ -35,8 +36,10 @@ urlpatterns = [
     path('search/', include(('app_dir.search.urls', 'search'), namespace='search')),
     path('settings/email/', MarketingPreferenceUpdateView.as_view(), name='marketing-pref'),
     path('cart/', include(('app_dir.cart.urls', 'cart'), namespace='cart')),
+    path('accounts/', RedirectView.as_view(url='/account')),
     path('account/', include(('app_dir.account.urls', 'account'), namespace='account')),
     path('webhooks/mailchimp/', MailchimpWebhookView.as_view(), name='webhooks-mailchimp'),
+    path('settings/', RedirectView.as_view(url='/account')),
 ]
 
 if settings.DEBUG:
