@@ -47,7 +47,7 @@ class RegistrationForm(forms.ModelForm):
         # Save the provided password in hashed format
         user = super(RegistrationForm, self).save(commit=False)
         user.set_password(self.cleaned_data["password1"])
-        # user.active = False  # send confirmation email
+        user.active = False  # send confirmation email
         if commit:
             user.save()
         return user
@@ -75,6 +75,7 @@ class UserAdminCreationForm(forms.ModelForm):
         # Save the provided password in hashed format
         user = super(UserAdminCreationForm, self).save(commit=False)
         user.set_password(self.cleaned_data["password1"])
+        user.is_active = False  # send confirmation email
         if commit:
             user.save()
         return user

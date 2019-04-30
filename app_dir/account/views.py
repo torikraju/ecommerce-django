@@ -1,11 +1,14 @@
+from django.contrib import messages
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render, redirect
+from django.urls import reverse
 from django.utils.http import is_safe_url
-from django.views.generic import CreateView, FormView, DetailView
+from django.utils.safestring import mark_safe
+from django.views.generic import CreateView, FormView, DetailView, View
 
 from app_dir.account.forms import LoginForm, RegistrationForm, GuestForm
-from app_dir.account.models import GuestEmail
+from app_dir.account.models import GuestEmail, EmailActivation
 from .signals import user_logged_in
 
 
@@ -85,6 +88,9 @@ class LoginView(FormView):
         password = form.cleaned_data.get("password")
         user = authenticate(request, username=email, password=password)
         if user is not None:
+            if not user.is_active:
+                messages.error(request, "This user is inactive")
+                return super(LoginView, self).form_invalid(form)
             login(request, user)
             user_logged_in.send(user.__class__, instance=user, request=request)
             try:
@@ -107,3 +113,28 @@ class AccountHomeView(LoginRequiredMixin, DetailView):
 
     def get_object(self):
         return self.request.user
+
+
+class AccountEmailActivateView(View):
+    def get(self, request, key, *args, **kwargs):
+        qs = EmailActivation.objects.filter(key__iexact=key)
+        confirm_qs = qs.confirmable()
+        if confirm_qs.count() == 1:
+            obj = confirm_qs.first()
+            obj.activate()
+            messages.success(request, "Your email has been confirmed. Please login.")
+            return redirect("login")
+        else:
+            activated_qs = qs.filter(activated=True)
+            if activated_qs.exists():
+                reset_link = reverse("password_reset")
+                msg = """Your email has already been confirmed
+                Do you need to <a href="{link}">reset your password</a>?
+                """.format(link=reset_link)
+                messages.success(request, mark_safe(msg))
+                return redirect("login")
+            return render(request, 'registration/activation-error.html')
+
+    def post(self, request, *args, **kwargs):
+        # create form to receive an email
+        pass
