@@ -9,27 +9,19 @@ from django.views.generic import CreateView, FormView, DetailView, View
 from django.views.generic.edit import FormMixin
 
 from app_dir.account.forms import LoginForm, RegistrationForm, GuestForm, ReactivateEmailForm
-from app_dir.account.models import GuestEmail, EmailActivation
+from app_dir.account.models import EmailActivation
 from configurations.mixin import NextUrlMixin, RequestFormAttachMixin
 
 
-def guest_register_view(request):
-    form = GuestForm(request.POST or None)
-    context = {
-        "form": form
-    }
-    next_ = request.GET.get('next')
-    next_post = request.POST.get('next')
-    redirect_path = next_ or next_post or None
-    if form.is_valid():
-        email = form.cleaned_data.get("email")
-        new_guest_email = GuestEmail.objects.create(email=email)
-        request.session['guest_email_id'] = new_guest_email.id
-        if is_safe_url(redirect_path, request.get_host()):
-            return redirect(redirect_path)
-        else:
-            return redirect("/register/")
-    return redirect("/register/")
+class GuestRegisterView(NextUrlMixin, RequestFormAttachMixin, CreateView):
+    form_class = GuestForm
+    default_next = '/register/'
+
+    def get_success_url(self):
+        return self.get_next_url()
+
+    def form_invalid(self, form):
+        return redirect(self.default_next)
 
 
 def login_page(request):

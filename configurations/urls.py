@@ -6,7 +6,7 @@ from django.urls import path, include
 from django.views.generic import RedirectView
 from rest_framework_jwt.views import obtain_jwt_token
 
-from app_dir.account.views import guest_register_view, RegisterView, LoginView
+from app_dir.account.views import GuestRegisterView, RegisterView, LoginView
 from app_dir.address.views import checkout_address_create_view, checkout_address_reuse_view
 from app_dir.billing.views import payment_method_view, payment_method_createview
 from app_dir.cart.views import cart_detail_api_view
@@ -19,7 +19,7 @@ urlpatterns = [
     path('contact', contact, name='contact'),
     path('login/', LoginView.as_view(), name='login'),
     path('register/', RegisterView.as_view(), name='register'),
-    path('register/guest/', guest_register_view, name='guest_register'),
+    path('register/guest/', GuestRegisterView.as_view(), name='guest_register'),
     path('checkout/address/create/', checkout_address_create_view, name='checkout_address_create'),
     path('checkout/address/reuse/', checkout_address_reuse_view, name='checkout_address_reuse'),
     path('logout/', LogoutView.as_view(), name='logout'),
