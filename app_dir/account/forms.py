@@ -3,6 +3,10 @@ from crispy_forms.layout import Layout, Submit, Row, Column
 from django import forms
 from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import ReadOnlyPasswordHashField
+from django.urls import reverse
+from django.utils.safestring import mark_safe
+
+from app_dir.account.models import EmailActivation
 
 User = get_user_model()
 
@@ -97,3 +101,17 @@ class UserAdminChangeForm(forms.ModelForm):
         # This is done here, rather than on the field, because the
         # field does not have access to the initial value
         return self.initial["password"]
+
+
+class ReactivateEmailForm(forms.Form):
+    email = forms.EmailField()
+
+    def clean_email(self):
+        email = self.cleaned_data.get('email')
+        qs = EmailActivation.objects.email_exists(email)
+        if not qs.exists():
+            register_link = reverse("register")
+            msg = """This email does not exists, would you like to <a href="{link}">register</a>?
+            """.format(link=register_link)
+            raise forms.ValidationError(mark_safe(msg))
+        return email

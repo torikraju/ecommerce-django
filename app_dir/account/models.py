@@ -9,6 +9,8 @@ from django.dispatch import receiver
 from django.template.loader import get_template
 from django.utils import timezone
 from django.urls import reverse
+from django.db.models import Q
+
 
 
 from configurations.utils import unique_key_generator
@@ -126,6 +128,14 @@ class EmailActivationManager(models.Manager):
 
     def confirmable(self):
         return self.get_queryset().confirmable()
+
+    def email_exists(self, email):
+        return self.get_queryset().filter(
+            Q(email=email) |
+            Q(user__email=email)
+        ).filter(
+            activated=False
+        )
 
 
 class EmailActivation(models.Model):
