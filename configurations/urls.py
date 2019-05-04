@@ -7,7 +7,7 @@ from django.views.generic import RedirectView
 from rest_framework_jwt.views import obtain_jwt_token
 
 from app_dir.account.views import GuestRegisterView, RegisterView, LoginView
-from app_dir.address.views import checkout_address_create_view, checkout_address_reuse_view
+from app_dir.address.views import checkout_address_create_view, checkout_address_reuse_view, AddressListView
 from app_dir.billing.views import payment_method_view, payment_method_createview
 from app_dir.cart.views import cart_detail_api_view
 from app_dir.marketing.views import MarketingPreferenceUpdateView, MailchimpWebhookView
@@ -42,6 +42,8 @@ urlpatterns = [
     path('account/', include(('app_dir.account.urls', 'account'), namespace='account')),
     path('webhooks/mailchimp/', MailchimpWebhookView.as_view(), name='webhooks-mailchimp'),
     path('settings/', RedirectView.as_view(url='/account')),
+    path('address/', RedirectView.as_view(url='/addresses')),
+    path('addresses/', AddressListView.as_view(), name='addresses'),
 ]
 
 if settings.DEBUG:

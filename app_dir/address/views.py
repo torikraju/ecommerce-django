@@ -1,9 +1,32 @@
 from django.shortcuts import redirect
 from django.utils.http import is_safe_url
+from django.views.generic import ListView
 
 from app_dir.address.forms import AddressForm
 from app_dir.address.models import Address
 from app_dir.billing.models import BillingProfile
+
+
+class AddressListView(ListView):
+    template_name = 'address/list.html'
+
+    def get_queryset(self):
+        request = self.request
+        billing_profile, billing_profile_created = BillingProfile.objects.new_or_get(request)
+        return Address.objects.filter(billing_profile=billing_profile)
+
+
+class AddressUpdateView(object):
+    template_name = 'addresses/update.html'
+
+    def get_queryset(self):
+        request = self.request
+        billing_profile, billing_profile_created = BillingProfile.objects.new_or_get(request)
+        return Address.objects.filter(billing_profile=billing_profile)
+
+
+class AddressCreateView(object):
+    template_name = 'addresses/create.html'
 
 
 def checkout_address_create_view(request):
