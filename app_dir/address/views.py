@@ -1,13 +1,14 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import redirect
 from django.utils.http import is_safe_url
-from django.views.generic import ListView
+from django.views.generic import ListView, CreateView,UpdateView
 
-from app_dir.address.forms import AddressForm
+from app_dir.address.forms import AddressForm, AddressCheckoutForm
 from app_dir.address.models import Address
 from app_dir.billing.models import BillingProfile
 
 
-class AddressListView(ListView):
+class AddressListView(LoginRequiredMixin, ListView):
     template_name = 'address/list.html'
 
     def get_queryset(self):
@@ -16,8 +17,10 @@ class AddressListView(ListView):
         return Address.objects.filter(billing_profile=billing_profile)
 
 
-class AddressUpdateView(object):
-    template_name = 'addresses/update.html'
+class AddressUpdateView(LoginRequiredMixin, UpdateView):
+    template_name = 'address/update.html'
+    form_class = AddressForm
+    success_url = '/addresses'
 
     def get_queryset(self):
         request = self.request
@@ -25,12 +28,26 @@ class AddressUpdateView(object):
         return Address.objects.filter(billing_profile=billing_profile)
 
 
-class AddressCreateView(object):
+class AddressCreateView(LoginRequiredMixin, CreateView):
     template_name = 'addresses/create.html'
+    form_class = AddressForm
+    success_url = '/addresses'
+
+    def form_valid(self, form):
+        request = self.request
+        billing_profile, billing_profile_created = BillingProfile.objects.new_or_get(request)
+        instance = form.save(commit=False)
+        instance.billing_profile = billing_profile
+        instance.save()
+        return super(AddressCreateView, self).form_valid(form)
+
+    # def get_queryset(self):
+
+    #     return Address.objects.filter(billing_profile=billing_profile)
 
 
 def checkout_address_create_view(request):
-    form = AddressForm(request.POST or None)
+    form = AddressCheckoutForm(request.POST or None)
     context = {
         "form": form
     }

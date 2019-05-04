@@ -4,7 +4,7 @@ from django.http import JsonResponse
 from django.shortcuts import render, redirect
 
 from app_dir.account.forms import LoginForm, GuestForm
-from app_dir.address.forms import AddressForm
+from app_dir.address.forms import AddressForm, AddressCheckoutForm
 from app_dir.address.models import Address
 from app_dir.billing.models import BillingProfile
 from app_dir.cart.models import Cart
@@ -72,7 +72,7 @@ def checkout_home(request):
 
     login_form = LoginForm(request=request)
     guest_form = GuestForm(request=request)
-    address_form = AddressForm()
+    address_form = AddressCheckoutForm()
     billing_address_id = request.session.get("billing_address_id", None)
     shipping_address_id = request.session.get("shipping_address_id", None)
     billing_profile, billing_profile_created = BillingProfile.objects.new_or_get(request)
