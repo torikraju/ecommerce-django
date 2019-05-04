@@ -1,13 +1,28 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import Http404
 from django.views.generic import DetailView, ListView
 
-from app_dir.analytics.signals import object_viewed_signal
+from app_dir.analytics.mixins import ObjectViewedMixin
 from app_dir.cart.models import Cart
 from app_dir.products.models import Product
-from app_dir.analytics.mixins import ObjectViewedMixin
 
 
-class ProductDetailSlugView(ObjectViewedMixin,DetailView):
+class UserProductHistoryView(LoginRequiredMixin, ListView):
+    template_name = "products/user-history.html"
+
+    def get_context_data(self, *args, **kwargs):
+        context = super(UserProductHistoryView, self).get_context_data(*args, **kwargs)
+        cart_obj, new_obj = Cart.objects.new_or_get(self.request)
+        context['cart'] = cart_obj
+        return context
+
+    def get_queryset(self):
+        request = self.request
+        views = request.user.objectviewed_set.by_model(Product, model_queryset=False)
+        return views
+
+
+class ProductDetailSlugView(ObjectViewedMixin, DetailView):
     queryset = Product.objects.all()
     template_name = "products/detail.html"
 
