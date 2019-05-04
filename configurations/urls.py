@@ -34,6 +34,7 @@ urlpatterns = [
     path('api/module/', include(('app_dir.module.api.urls', 'module_api'), namespace='module_api')),
     path('product/', include(('app_dir.products.urls', 'product'), namespace='product')),
     path('search/', include(('app_dir.search.urls', 'search'), namespace='search')),
+    path('orders/', include(('app_dir.order.urls', 'orders'), namespace='orders')),
     path('settings/email/', MarketingPreferenceUpdateView.as_view(), name='marketing-pref'),
     path('cart/', include(('app_dir.cart.urls', 'cart'), namespace='cart')),
     path('accounts/', RedirectView.as_view(url='/account')),
