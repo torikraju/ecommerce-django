@@ -5,10 +5,10 @@ from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.utils.http import is_safe_url
 from django.utils.safestring import mark_safe
-from django.views.generic import CreateView, FormView, DetailView, View
+from django.views.generic import CreateView, FormView, DetailView, View, UpdateView
 from django.views.generic.edit import FormMixin
 
-from app_dir.account.forms import LoginForm, RegistrationForm, GuestForm, ReactivateEmailForm
+from app_dir.account.forms import LoginForm, RegistrationForm, GuestForm, ReactivateEmailForm, UserDetailChangeForm
 from app_dir.account.models import EmailActivation
 from configurations.mixin import NextUrlMixin, RequestFormAttachMixin
 
@@ -132,3 +132,19 @@ class AccountEmailActivateView(FormMixin, View):
     def form_invalid(self, form):
         context = {'form': form, "key": self.key}
         return render(self.request, 'registration/activation-error.html', context)
+
+
+class UserDetailUpdateView(LoginRequiredMixin, UpdateView):
+    form_class = UserDetailChangeForm
+    template_name = 'account/detail-update-view.html'
+
+    def get_object(self):
+        return self.request.user
+
+    def get_context_data(self, *args, **kwargs):
+        context = super(UserDetailUpdateView, self).get_context_data(*args, **kwargs)
+        context['title'] = 'Change Your Account Details'
+        return context
+
+    def get_success_url(self):
+        return reverse("account:home")

@@ -195,10 +195,14 @@ class ReactivateEmailForm(forms.Form):
         qs = EmailActivation.objects.email_exists(email)
         if not qs.exists():
             register_link = reverse("register")
-            msg = """This email does not exists, would you like to <a href="{link}">register</a>?
-            """.format(link=register_link)
+            msg = f"This email does not exists, would you like to <a href='{register_link}'>register</a>?"
             raise forms.ValidationError(mark_safe(msg))
         return email
 
 
+class UserDetailChangeForm(forms.ModelForm):
+    full_name = forms.CharField(label='Name', required=False, widget=forms.TextInput(attrs={"class": 'form-control'}))
 
+    class Meta:
+        model = User
+        fields = ['full_name']
