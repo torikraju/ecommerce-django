@@ -9,7 +9,6 @@ from app_dir.billing.models import BillingProfile
 from app_dir.cart.models import Cart
 from configurations.utils import unique_order_id_generator
 
-
 ORDER_STATUS_CHOICES = (
     ('created', 'Created'),
     ('paid', 'Paid'),
@@ -95,11 +94,20 @@ class Order(models.Model):
         return new_total
 
     def check_done(self):
+        shipping_address_required = not self.cart.is_digital
+        shipping_done = False
+        if shipping_address_required and self.shipping_address:
+            shipping_done = True
+        elif shipping_address_required and not self.shipping_address:
+            shipping_done = False
+        else:
+            shipping_done = True
+
         billing_profile = self.billing_profile
         shipping_address = self.shipping_address
         billing_address = self.billing_address
         total = self.total
-        if billing_profile and shipping_address and billing_address and total > 0:
+        if billing_profile and shipping_done and billing_address and total > 0:
             return True
         return False
 
