@@ -12,6 +12,7 @@ from app_dir.address.views import checkout_address_create_view, checkout_address
 from app_dir.billing.views import payment_method_view, payment_method_createview
 from app_dir.cart.views import cart_detail_api_view
 from app_dir.marketing.views import MarketingPreferenceUpdateView, MailchimpWebhookView
+from app_dir.order.views import LibraryView
 from .views import home_page, about, contact
 
 urlpatterns = [
@@ -45,6 +46,7 @@ urlpatterns = [
     path('settings/', RedirectView.as_view(url='/account')),
     path('address/', RedirectView.as_view(url='/addresses')),
     path('addresses/', AddressListView.as_view(), name='addresses'),
+    path('library/', LibraryView.as_view(), name='library'),
     path('addresses/create/', AddressCreateView.as_view(), name='address-create'),
     path('addresses/<int:pk>/', AddressUpdateView.as_view(), name='address-update'),
 
